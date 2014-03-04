@@ -2,6 +2,8 @@ package main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Stats {
 
@@ -9,30 +11,30 @@ public class Stats {
 	int fieldSize;
 	Player ownPlayer;
 	
-	List<Town> towns;
+	Set<Town> towns;
 	List<Player> players;
 	
-	public Stats() {
+	Stats() {
 		 players = new ArrayList<Player>();
-		 towns = new ArrayList<Town>();
+		 towns = new TreeSet<Town>();
 	}
 	
 	//////////////  SETTERS
-	public void setRound(int round) {
+	void setRound(int round) {
 		this.round = round;
 	}
 	
-	public void setFieldSize(int size) {
+	void setFieldSize(int size) {
 		this.fieldSize = size;
 	}
 	
-	public void setOwnPlayer(Player player) {
+	void setOwnPlayer(Player player) {
 		this.ownPlayer = player;
 	}
 	
 	////////////// GETTERS
 	
-	public Player findPlayerByID(int id) {
+	Player findPlayerByID(int id) {
 		for (Player player: players) {
 			if (player.getID() == id) {
 				return player;
@@ -43,11 +45,11 @@ public class Stats {
 	
 	////////////// GETTERS END
 	
-	public void addTown(Town town) {
+	void addTown(Town town) {
 		towns.add(town);
 	}
 	
-	public void addPlayer(Player player) {
+	void addPlayer(Player player) {
 		players.add(player);
 	}
 	
@@ -67,5 +69,24 @@ public class Stats {
 			result.append(player.toString() + "\n");
 		}
 		return result.toString();
+	}
+	
+	String getReply() {
+		StringBuilder prices = new StringBuilder();
+		StringBuilder build = new StringBuilder();
+		StringBuilder remove = new StringBuilder();
+		for (Shop shop: ownPlayer.shops) {
+			switch(shop.getStatus()) {
+			case BUILD:
+				build.append("n " + shop.getX() + " " + shop.getY() + ";");
+				break;
+			case REMOVE:
+				remove.append("z " + shop.getX() + " " + shop.getY() + ";");
+			case OLD:
+				prices.append(shop.getPrice() + ";");
+				break;
+			}
+		}
+		return prices.toString() + remove.toString() + build.toString();
 	}
 }

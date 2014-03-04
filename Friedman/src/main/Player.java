@@ -1,18 +1,18 @@
 package main;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Player {
 
 	int id;
-	List<Shop> shops;
+	Set<Shop> shops;
 	double wallet;
 	
 	Player(int id, double wallet) {
 		this.id = id;
 		this.wallet = wallet;
-		shops = new ArrayList<Shop>();
+		shops = new TreeSet<Shop>();
 	}
 	
 	void addShop(Shop shop) {
@@ -21,6 +21,14 @@ public class Player {
 	
 	int getID() {
 		return id;
+	}
+	
+	double dayProfit() {
+		double sum = 0;
+		for (Shop shop: shops) {
+			sum += shop.getProfit();
+		}
+		return sum;
 	}
 	
 	@Override

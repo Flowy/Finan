@@ -47,4 +47,11 @@ public abstract class Field implements Comparable<Field>{
 	public String toString() {
 		return "Position: " + positionX + ", " + positionY;
 	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 31;
+		hash = hash * positionX + positionY;
+		return hash;
+	}
 }

@@ -89,7 +89,7 @@ public class PlayfieldLoader {
 			int x = Integer.parseInt(m.group("x"));
 			int y = Integer.parseInt(m.group("y"));
 			int population = Integer.parseInt(m.group("population"));
-			Town actual = new Town(x, y, population, Town.Status.old);
+			Town actual = new Town(x, y, population);
 			stats.addTown(actual);
 		}
 	}
@@ -114,7 +114,7 @@ public class PlayfieldLoader {
 			int y = Integer.parseInt(m.group("y"));
 			double price = Double.parseDouble(m.group("price"));
 			double profit = Double.parseDouble(m.group("profit"));
-			Shop actualShop = new Shop(x, y);
+			Shop actualShop = new Shop(x, y, Shop.Status.OLD);
 			actualShop.setPrice(price);
 			actualShop.setProfit(profit);
 			actualPlayer.addShop(actualShop);

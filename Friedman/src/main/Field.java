@@ -42,4 +42,9 @@ public abstract class Field implements Comparable<Field>{
 		}
 		return result;
 	}
+	
+	@Override
+	public String toString() {
+		return "Position: " + positionX + ", " + positionY;
+	}
 }

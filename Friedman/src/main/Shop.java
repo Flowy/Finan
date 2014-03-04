@@ -18,4 +18,8 @@ public class Shop extends Field {
 		this.profit = profit;
 	}
 
+	@Override
+	public String toString() {
+		return super.toString() + ", Price: " + price + ", Profit " + profit;
+	}
 }

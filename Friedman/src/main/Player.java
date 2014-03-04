@@ -22,4 +22,16 @@ public class Player {
 	int getID() {
 		return id;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder result = new StringBuilder();
+		result.append("Player ID: " + id + "\n");
+		result.append("Wallet: " + wallet + "\n");
+		result.append("Shops: " + shops.size() + "\n");
+		for (Shop shop: shops) {
+			result.append(shop.toString() + "\n");
+		}
+		return result.toString();
+	}
 }

@@ -15,8 +15,8 @@ public class PlayfieldLoader {
 	public static final Pattern sizeRegex = Pattern.compile("^Rozmer: (?<size>\\d+)");
 	public static final Pattern townsRegex = Pattern.compile("^Mesta: (?<towns>\\d+)");
 	public static final Pattern townRegex = Pattern.compile("^(?<x>\\d+) (?<y>\\d+) (?<population>\\d+)");
-	public static final Pattern playerStatsRegex = Pattern.compile("^Hrac(?<id>\\d+): (?<wallet>\\d+) euro (?<shops>\\d+) obchodu");
-	public static final Pattern shopsRegex = Pattern.compile("^(?<x>\\d+) (?<y>\\d+) (?<price>\\d+) (?<profit>\\d+)");
+	public static final Pattern playerStatsRegex = Pattern.compile("^Hrac(?<id>\\d+): (?<wallet>\\d+.?\\d*) euro (?<shops>\\d+) obchodu");
+	public static final Pattern shopsRegex = Pattern.compile("^(?<x>\\d+) (?<y>\\d+) (?<price>\\d+.?\\d*) (?<profit>\\d+.?\\d*)");
 	//XXX: 
 	//	public static final Pattern playerResponseRegex = Pattern.compile("^Hrac(?<id>\\d+)_odpoved: \"(?:(?<price>\\d*);?)*(?:(?<close>z \\d+ \\d+);?)*(?:(?<open>n \\d+ \\d+);?)*\"");
 
@@ -29,7 +29,7 @@ public class PlayfieldLoader {
 		stats = new Stats();
 	}
 
-	public Stats load(String filePath) {
+	Stats loadFile(String filePath) {
 
 		List<String> content = null;
 		Charset charset = Charset.forName("windows-1250");

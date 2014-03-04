@@ -17,6 +17,7 @@ public class Stats {
 		 towns = new ArrayList<Town>();
 	}
 	
+	//////////////  SETTERS
 	public void setRound(int round) {
 		this.round = round;
 	}
@@ -29,13 +30,7 @@ public class Stats {
 		this.ownPlayer = player;
 	}
 	
-	public void addTown(Town town) {
-		towns.add(town);
-	}
-	
-	public void addPlayer(Player player) {
-		players.add(player);
-	}
+	////////////// GETTERS
 	
 	public Player findPlayerByID(int id) {
 		for (Player player: players) {
@@ -46,4 +41,31 @@ public class Stats {
 		return null;
 	}
 	
+	////////////// GETTERS END
+	
+	public void addTown(Town town) {
+		towns.add(town);
+	}
+	
+	public void addPlayer(Player player) {
+		players.add(player);
+	}
+	
+	
+	@Override
+	public String toString() {
+		StringBuilder result = new StringBuilder();
+		result.append("Round: " + round + "\n");
+		result.append("Field Size: " + fieldSize + "\n");
+		result.append("Own Player ID: " + ownPlayer.getID() + "\n");
+		result.append("Towns: " + towns.size() + "\n");
+		for (Town town: towns) {
+			result.append("\t" + town.toString() + "\n");
+		}
+		result.append("\n");
+		for (Player player: players) {
+			result.append(player.toString() + "\n");
+		}
+		return result.toString();
+	}
 }

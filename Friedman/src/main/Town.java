@@ -14,5 +14,10 @@ public class Town extends Field {
 		this.citizens = citizens;
 		this.status = status;
 	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + ", Population: " + citizens;
+	}
 
 }

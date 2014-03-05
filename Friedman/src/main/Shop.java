@@ -3,7 +3,7 @@ package main;
 public class Shop extends Field {
 
 	enum Status {
-		OLD, BUILD, REMOVE
+		OLD, BUILD, REMOVE, VOID
 	}
 	
 	double price = 0;
@@ -16,7 +16,11 @@ public class Shop extends Field {
 	}
 	
 	void setForRemove() {
-		status = Status.REMOVE;
+		if (status == Status.BUILD) {
+			status = Status.VOID;
+		} else {
+			status = Status.REMOVE;
+		}
 	}
 	
 	void setPrice(double price) {

@@ -1,2 +1,12 @@
 zarobok na tovare nad 5e klesa so stupajucou cenou
-minimalna cena je 1.127 (nizsia cena produkuje stratu)
+minimalna cena je 1.127 (5-sqrt(15)) (nizsia cena produkuje stratu)
+
+ak hraci stavaju na rovnakom policku tak sa nic nepostavi (problem hlavne na zaciatku)
+riesenie bude pravdepodobne vzdy postavit jeden menej vyhodny obchod ako zalohu
+zaroven sledovat predchadzajucu odpoved hraca (pokus o postavenie obchodov) a dalej sa rozhodnut podla toho
+
+novo postaveny shop nema zisk v prvy den (cena sa nastavuje az v dalsom kole) zaroven sa neplati najomne
+
+BUG: pre zamrazenie hry na zaciatku staci postavit dva obchody na kazdom policku (tymto sa zabrani skutocnemu
+ postaveniu a teda strate penazi a zaroven na poli sa neda stavat ani ostatnym) (NEOZNAMOVAT moznost vyuzit po
+ prvom tahu ak nepriatel nepostavil ziadny obchod)

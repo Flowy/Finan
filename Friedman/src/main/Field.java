@@ -19,7 +19,7 @@ public abstract class Field implements Comparable<Field>{
 	}
 		
 	int distanceFrom(Field finish) {
-		return Math.abs( positionX + positionY - finish.getX() - finish.getY() );
+		return Math.abs(getX() - finish.getX()) + Math.abs(getY() - finish.getY());
 	}
 	
 	@Override

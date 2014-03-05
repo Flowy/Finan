@@ -85,6 +85,8 @@ public class Stats {
 			case OLD:
 				prices.append(shop.getPrice() + ";");
 				break;
+			case VOID:
+				break;
 			}
 		}
 		return prices.toString() + remove.toString() + build.toString();

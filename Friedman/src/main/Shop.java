@@ -51,8 +51,9 @@ public class Shop extends Field {
 	
 	/**
 	 * Calculate price for profit
+	 * 
 	 * @param profit
-	 * @return price
+	 * @return price (returns NaN for x>5)
 	 */
 	static double wantedProfitPerUnit(double profit) {
 		double wantedProfit;

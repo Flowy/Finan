@@ -1,5 +1,7 @@
 package main;
 
+import java.util.Set;
+
 public class Shop extends Field {
 
 	enum Status {
@@ -15,6 +17,10 @@ public class Shop extends Field {
 		this.status = status;
 	}
 	
+	static Shop createShopOnPosition(int position, int fieldSize, Status status) {
+		return new Shop( position/fieldSize, position%fieldSize, status );
+	}
+
 	void setForRemove() {
 		if (status == Status.BUILD) {
 			status = Status.VOID;
@@ -43,6 +49,20 @@ public class Shop extends Field {
 		return status;
 	}
 	
+	static double avgDistToTowns(int x, int y, Set<Town> towns) throws ArithmeticException {
+		int nomSum = 0;
+		int denomSum = 0;
+		if (towns == null || towns.size() == 0) {
+			throw new ArithmeticException();
+		}
+		for (Town town: towns) {
+			int dist = Field.distanceFrom(x, y, town);
+			nomSum += dist*town.getPopulation();
+			denomSum += town.getPopulation();
+		}
+		return nomSum / (double) denomSum;
+	}
+	
 	static double profitPerUnit(double price) {
 		double profitPerUnit;
 		profitPerUnit = price - 1 - Math.pow(price,2);
@@ -63,6 +83,6 @@ public class Shop extends Field {
 
 	@Override
 	public String toString() {
-		return super.toString() + ", Price: " + price + ", Profit " + profit;
+		return super.toString() + ", Price: " + price + ", Profit " + profit + ", Status: " + status;
 	}
 }

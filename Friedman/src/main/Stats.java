@@ -7,9 +7,9 @@ import java.util.TreeSet;
 
 public class Stats {
 
-	int round;
-	int fieldSize;
-	Player ownPlayer;
+	private int round;
+	private int fieldSize;
+	private Player ownPlayer;
 	
 	Set<Town> towns;
 	List<Player> players;
@@ -33,6 +33,18 @@ public class Stats {
 	}
 	
 	////////////// GETTERS
+	
+	Player getOwnPlayer() {
+		return ownPlayer;
+	}
+	
+	int getFieldSize() {
+		return fieldSize;
+	}
+	
+	Set<Town> getTowns() {
+		return towns;
+	}
 	
 	Player findPlayerByID(int id) {
 		for (Player player: players) {

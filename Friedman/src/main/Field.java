@@ -2,14 +2,14 @@ package main;
 
 public abstract class Field implements Comparable<Field>{
 	
-	private int positionX;
-	private int positionY;
+	private final int positionX;
+	private final int positionY;
 	
 	Field(int x, int y) {
 		positionX = x;
 		positionY = y;
 	}
-	
+		
 	int getX() {
 		return positionX;
 	}
@@ -19,7 +19,11 @@ public abstract class Field implements Comparable<Field>{
 	}
 		
 	int distanceFrom(Field finish) {
-		return Math.abs(getX() - finish.getX()) + Math.abs(getY() - finish.getY());
+		return distanceFrom(this.getX(), this.getY(), finish);
+	}
+	
+	static int distanceFrom(int x, int y, Field finish) {
+		return Math.abs(x - finish.getX()) + Math.abs(y - finish.getY());
 	}
 	
 	@Override

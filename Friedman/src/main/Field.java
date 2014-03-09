@@ -25,25 +25,9 @@ public abstract class Field implements Comparable<Field>{
 	}
 	
 	static int distanceFrom(int x, int y, Field finish) {
-		return Math.abs(x - finish.getX()) + Math.abs(y - finish.getY());
-	}
-	
-	Field chooseClosest(Collection<Shop> fields) {
-		Field closest = null;
-		int actualDistance;
-		int minDistance;
-		for (Field field: fields) {
-			if (closest == null) {
-				closest = field;
-			} else {
-				actualDistance = this.distanceFrom(field);
-				minDistance = closest.distanceFrom(field);
-				if (actualDistance < minDistance) {
-					closest = field;
-				}
-			}
-		}
-		return closest;		
+		int result = Math.abs(x - finish.getX());
+		result += Math.abs(y - finish.getY());
+		return result;
 	}
 	
 	static Field chooseClosest(int x, int y, Collection<Field> fields) {

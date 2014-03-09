@@ -53,7 +53,8 @@ public class Player {
 		while (changed) {
 			changed = false;
 			for (Town town: towns) {
-				Set<Town> actual = centerShops.get(town.chooseClosest(centerShops.keySet()));
+				Shop closestShop = town.chooseClosestShop(centerShops.keySet());
+				Set<Town> actual = centerShops.get(closestShop);
 				actual.add(town);
 			}
 			

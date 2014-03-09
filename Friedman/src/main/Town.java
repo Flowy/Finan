@@ -1,5 +1,7 @@
 package main;
 
+import java.util.Collection;
+
 public class Town extends Field {
 	
 	int citizens;
@@ -11,6 +13,24 @@ public class Town extends Field {
 	
 	int getPopulation() {
 		return citizens;
+	}
+	
+	Shop chooseClosestShop(Collection<Shop> shopList) {
+		Shop closest = null;
+		int actualDistance;
+		int minDistance;
+		for (Shop shop: shopList) {
+			if (closest == null) {
+				closest = shop;
+			} else {
+				actualDistance = this.distanceFrom(shop);
+				minDistance = this.distanceFrom(closest);
+				if (actualDistance < minDistance) {
+					closest = shop;
+				}
+			}
+		}
+		return closest;		
 	}
 	
 	@Override

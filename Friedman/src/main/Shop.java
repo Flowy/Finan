@@ -53,7 +53,7 @@ public class Shop extends Field {
 	Status getStatus() {
 		return status;
 	}
-
+	
 	static Shop getCenter(Collection<Town> towns) {
 		int nominatorXSum = 0, nominatorYSum = 0;
 		float denominatorSum = 0;

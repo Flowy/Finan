@@ -234,8 +234,8 @@ void PlayField::play_one_round(response_t* moves)
     for (j=0; j<town_iter->residents; ++j)
     {
       rnd = weight_sum * rand() / RAND_MAX;
-      if (debug)
-        cout << "--- dice roll: " << rnd << endl;
+//      if (debug)
+//        cout << "--- dice roll: " << rnd << endl;
       aux_weight = 0;
       i=0;
       do
@@ -243,12 +243,12 @@ void PlayField::play_one_round(response_t* moves)
         aux_weight += shop_weights[i++].weight;
       }
       while (aux_weight < rnd);
-      if (debug)
-        cout << "shop at [" << shop_weights[i-1].shop_iter->x << ","
-             << shop_weights[i-1].shop_iter->y << "] gets profit: "
-             << shop_weights[i-1].shop_iter->price - GOODS_COST - 1.0*shop_weights[i-1].shop_iter->price*shop_weights[i-1].shop_iter->price/MAX_PRICE
-             << " from town [" << town_iter->x << "," << town_iter->y << "]"
-             << endl;
+//      if (debug)
+//        cout << "shop at [" << shop_weights[i-1].shop_iter->x << ","
+//             << shop_weights[i-1].shop_iter->y << "] gets profit: "
+//             << shop_weights[i-1].shop_iter->price - GOODS_COST - 1.0*shop_weights[i-1].shop_iter->price*shop_weights[i-1].shop_iter->price/MAX_PRICE
+//             << " from town [" << town_iter->x << "," << town_iter->y << "]"
+//             << endl;
       shop_weights[i-1].shop_iter->profit += (shop_weights[i-1].shop_iter->price - GOODS_COST);
     }
   }

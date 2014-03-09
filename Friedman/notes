@@ -10,3 +10,7 @@ novo postaveny shop nema zisk v prvy den (cena sa nastavuje az v dalsom kole) za
 BUG: pre zamrazenie hry na zaciatku staci postavit dva obchody na kazdom policku (tymto sa zabrani skutocnemu
  postaveniu a teda strate penazi a zaroven na poli sa neda stavat ani ostatnym) (NEOZNAMOVAT moznost vyuzit po
  prvom tahu ak nepriatel nepostavil ziadny obchod)
+ 
+ v emulatore chyba odpocet ceny sluzieb spojenych s predajom tovaru
+ 
+vahu mesta umocnit na tretiu aby mesta s nizkym poctom obyvatelov boli menej vyznamne

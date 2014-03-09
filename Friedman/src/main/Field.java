@@ -1,5 +1,7 @@
 package main;
 
+import java.util.Collection;
+
 public abstract class Field implements Comparable<Field>{
 	
 	private final int positionX;
@@ -17,13 +19,43 @@ public abstract class Field implements Comparable<Field>{
 	int getY() {
 		return positionY;
 	}
-		
+	
 	int distanceFrom(Field finish) {
 		return distanceFrom(this.getX(), this.getY(), finish);
 	}
 	
 	static int distanceFrom(int x, int y, Field finish) {
 		return Math.abs(x - finish.getX()) + Math.abs(y - finish.getY());
+	}
+	
+	Field chooseClosest(Collection<Shop> fields) {
+		Field closest = null;
+		int actualDistance;
+		int minDistance;
+		for (Field field: fields) {
+			if (closest == null) {
+				closest = field;
+			} else {
+				actualDistance = this.distanceFrom(field);
+				minDistance = closest.distanceFrom(field);
+				if (actualDistance < minDistance) {
+					closest = field;
+				}
+			}
+		}
+		return closest;		
+	}
+	
+	static Field chooseClosest(int x, int y, Collection<Field> fields) {
+		Field closest = null;
+		for (Field field: fields) {
+			if (closest == null) {
+				closest = field;
+			} else {
+				closest = closest.distanceFrom(field) < distanceFrom(x, y, field) ? closest : field;
+			}
+		}
+		return closest;
 	}
 	
 	@Override
@@ -42,7 +74,9 @@ public abstract class Field implements Comparable<Field>{
 		
 		if (o instanceof Field) {
 			Field other = (Field) o;
-			if (other.getX() == this.getX() && other.getY() == this.getY());
+			if (other.getX() == this.getX() && other.getY() == this.getY()) {
+				result = true;
+			}
 		}
 		return result;
 	}

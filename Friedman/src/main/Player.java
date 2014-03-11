@@ -12,8 +12,6 @@ import java.util.TreeSet;
 
 public class Player {
 
-	
-	
 	int id;
 	Set<Shop> shops;
 	double wallet;
@@ -41,13 +39,21 @@ public class Player {
 	}
 
 	void createShopsInClusters(int fieldSize, Collection<Town> towns, int newShops) {
+
 		Map<Shop, Set<Town>> centerShops = new TreeMap<>();
+		Map<Shop, Set<Town>> oldShops = null;
+		//add old shops
+		for (Shop shop: shops) {
+			centerShops.put(shop, new TreeSet<Town>());
+		}
+
+		//add new shops
 		for (int i = 0; i<newShops; i++) {
 			int x, y;
 			x = (int) (Math.random() * 14.9999);
 			y = (int) (Math.random() * 14.9999);
 			centerShops.put(new Shop(x, y, Shop.Status.VOID), new TreeSet<Town>());
-		}				
+		}
 
 		boolean changed = true;
 		while (changed) {
@@ -57,11 +63,14 @@ public class Player {
 				Set<Town> actual = centerShops.get(closestShop);
 				actual.add(town);
 			}
-			
-			Map<Shop, Set<Town>> oldShops = centerShops;
+
+			oldShops = centerShops;
 			centerShops = new TreeMap<>();
 			for (Shop shop: oldShops.keySet()) {
-				Shop newCenter = Shop.getCenter(oldShops.get(shop));
+				Shop newCenter = shop;
+				if (shop.getStatus() != Shop.Status.OLD) {
+					newCenter = Shop.getCenter(oldShops.get(shop));
+				}
 				if (!shop.equals(newCenter) && !changed) {
 					changed = true;
 				}
@@ -70,7 +79,10 @@ public class Player {
 		}
 		for (Shop shop: centerShops.keySet()) {
 			shop.setForBuild();
-			addShop(shop);
+
+			if (oldShops != null && oldShops.get(shop).size() != 0) {
+				addShop(shop);
+			}
 		}
 	}
 
@@ -83,10 +95,10 @@ public class Player {
 			double dist = Shop.avgWeightToTowns(i/fieldSize, i%fieldSize, towns, 1.5);
 
 			//debug
-				if (i%fieldSize == 0) {
-					System.out.format("\n%2d ", i/fieldSize);
-				}
-				System.out.format("%8.5f ", dist);
+//			if (i%fieldSize == 0) {
+//				System.out.format("\n%2d ", i/fieldSize);
+//			}
+//			System.out.format("%8.5f ", dist);
 
 			Queue<Integer> tempList = positions.get(dist);
 			if (tempList == null) {
@@ -95,7 +107,7 @@ public class Player {
 			}
 			tempList.add(i);
 		}
-		
+
 		//create shops
 		List<Queue<Integer>> shopLists = new ArrayList<>(positions.values());
 		int i = 0;

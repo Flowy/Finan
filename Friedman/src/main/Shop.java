@@ -29,9 +29,11 @@ public class Shop extends Field {
 			status = Status.REMOVE;
 		}
 	}
-	
+
 	void setForBuild() {
-		status = Status.BUILD;
+		if (status != Status.OLD){ 
+			status = Status.BUILD;
+		}
 	}
 
 	void setPrice(double price) {
@@ -53,7 +55,7 @@ public class Shop extends Field {
 	Status getStatus() {
 		return status;
 	}
-	
+
 	static Shop getCenter(Collection<Town> towns) {
 		int nominatorXSum = 0, nominatorYSum = 0;
 		float denominatorSum = 0;
@@ -63,13 +65,13 @@ public class Shop extends Field {
 			nominatorYSum += town.getY() * town.getPopulation();
 			denominatorSum += town.getPopulation();
 		}
-		
+
 		int x = Math.round(nominatorXSum / denominatorSum);
 		int y = Math.round(nominatorYSum / denominatorSum);
-		
+
 		return new Shop(x, y, Status.VOID);
 	}
-	
+
 	double getWeightForTown(Town town) {
 		return getWeightForTown(town, getPrice());
 	}

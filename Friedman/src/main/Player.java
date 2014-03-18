@@ -29,6 +29,20 @@ public class Player {
 	int getID() {
 		return id;
 	}
+	
+	Set<Shop> getShops() {
+		return shops;
+	}
+	
+	boolean shopExists(Shop origin){
+		boolean result = false;
+		for (Shop shop: shops) {
+			if (shop.equals(origin)) {
+				result = true;
+			}
+		}
+		return result;
+	}
 
 	double dayProfit() {
 		double sum = 0;
@@ -38,88 +52,50 @@ public class Player {
 		return sum;
 	}
 
-	void createShopsInClusters(int fieldSize, Collection<Town> towns, int newShops) {
-
-		Map<Shop, Set<Town>> centerShops = new TreeMap<>();
-		Map<Shop, Set<Town>> oldShops = null;
-		//add old shops
+	double getTotalShopWeigths(Collection<Town> towns, double price) {
+		double sum = 0;
 		for (Shop shop: shops) {
-			centerShops.put(shop, new TreeSet<Town>());
-		}
-
-		//add new shops
-		for (int i = 0; i<newShops; i++) {
-			int x, y;
-			x = (int) (Math.random() * 14.9999);
-			y = (int) (Math.random() * 14.9999);
-			centerShops.put(new Shop(x, y, Shop.Status.VOID), new TreeSet<Town>());
-		}
-
-		boolean changed = true;
-		while (changed) {
-			changed = false;
 			for (Town town: towns) {
-				Shop closestShop = town.chooseClosestShop(centerShops.keySet());
-				Set<Town> actual = centerShops.get(closestShop);
-				actual.add(town);
-			}
-
-			oldShops = centerShops;
-			centerShops = new TreeMap<>();
-			for (Shop shop: oldShops.keySet()) {
-				Shop newCenter = shop;
-				if (shop.getStatus() != Shop.Status.OLD) {
-					newCenter = Shop.getCenter(oldShops.get(shop));
-				}
-				if (!shop.equals(newCenter) && !changed) {
-					changed = true;
-				}
-				centerShops.put(newCenter, new TreeSet<Town>());
+				sum += shop.getWeightForTown(town, price);
 			}
 		}
-		for (Shop shop: centerShops.keySet()) {
-			shop.setForBuild();
-
-			if (oldShops != null && oldShops.get(shop).size() != 0) {
-				addShop(shop);
-			}
-		}
+		return sum;
 	}
 
-	//TODO: needs to count with near shops
-	void createShopsByAverage(int fieldSize, Set<Town> towns, int newShops) {
-		//sort shop positions by avg distance to towns
-		Map<Double, Queue<Integer>> positions = new TreeMap<>();
-
-		for (int i = 0; i<Math.pow(fieldSize, 2); i++) {
-			double dist = Shop.avgWeightToTowns(i/fieldSize, i%fieldSize, towns, 1.5);
-
-			//debug
-//			if (i%fieldSize == 0) {
-//				System.out.format("\n%2d ", i/fieldSize);
+//	//TODO: needs to count with near shops
+//	void createShopsByAverage(int fieldSize, Set<Town> towns, int newShops) {
+//		//sort shop positions by avg distance to towns
+//		Map<Double, Queue<Integer>> positions = new TreeMap<>();
+//
+//		for (int i = 0; i<Math.pow(fieldSize, 2); i++) {
+//			double dist = Shop.avgWeightToTowns(i/fieldSize, i%fieldSize, towns, 1.5);
+//
+//			//debug
+////			if (i%fieldSize == 0) {
+////				System.out.format("\n%2d ", i/fieldSize);
+////			}
+////			System.out.format("%8.5f ", dist);
+//
+//			Queue<Integer> tempList = positions.get(dist);
+//			if (tempList == null) {
+//				tempList = new ArrayDeque<Integer>();
+//				positions.put(dist, tempList);
 //			}
-//			System.out.format("%8.5f ", dist);
-
-			Queue<Integer> tempList = positions.get(dist);
-			if (tempList == null) {
-				tempList = new ArrayDeque<Integer>();
-				positions.put(dist, tempList);
-			}
-			tempList.add(i);
-		}
-
-		//create shops
-		List<Queue<Integer>> shopLists = new ArrayList<>(positions.values());
-		int i = 0;
-		for (Queue<Integer> shopList: shopLists) {
-			while (i<newShops && shopList.size() > 0) {
-				Shop actual = Shop.createShopOnPosition(shopList.poll(), fieldSize, Shop.Status.BUILD);
-				if (addShop(actual)) {
-					i++;
-				}
-			}
-		}
-	}
+//			tempList.add(i);
+//		}
+//
+//		//create shops
+//		List<Queue<Integer>> shopLists = new ArrayList<>(positions.values());
+//		int i = 0;
+//		for (Queue<Integer> shopList: shopLists) {
+//			while (i<newShops && shopList.size() > 0) {
+//				Shop actual = Shop.createShopOnPosition(shopList.poll(), fieldSize, Shop.Status.BUILD);
+//				if (addShop(actual)) {
+//					i++;
+//				}
+//			}
+//		}
+//	}
 
 	@Override
 	public String toString() {
@@ -131,5 +107,17 @@ public class Player {
 			result.append(shop.toString() + "\n");
 		}
 		return result.toString();
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		boolean result = false;
+		if (object instanceof Player) {
+			Player player = (Player) object;
+			if (player.getID() == this.getID()) {
+				result = true;
+			}
+		}
+		return result;
 	}
 }

@@ -1,6 +1,5 @@
 package main;
 
-import java.util.Collection;
 import java.util.Set;
 
 public class Shop extends Field {
@@ -56,59 +55,26 @@ public class Shop extends Field {
 		return status;
 	}
 
-	static Shop getCenter(Collection<Town> towns) {
-		int nominatorXSum = 0, nominatorYSum = 0;
-		float denominatorSum = 0;
-
-		for (Town town:towns) {
-			nominatorXSum += town.getX() * town.getPopulation();
-			nominatorYSum += town.getY() * town.getPopulation();
-			denominatorSum += town.getPopulation();
-		}
-
-		int x = Math.round(nominatorXSum / denominatorSum);
-		int y = Math.round(nominatorYSum / denominatorSum);
-
-		return new Shop(x, y, Status.VOID);
-	}
-
 	double getWeightForTown(Town town) {
 		return getWeightForTown(town, getPrice());
 	}
 
 	double getWeightForTown(Town town, double price) {
-		return getWeightForTown(this.getX(), this.getY(), town, price);
-	}
-
-	static double getWeightForTown(int originX, int originY, Town town, double price) {
-		return getWeight(Field.distanceFrom(originX, originY, town), price);
+		return getWeight(this.distanceFrom(town), price);
 	}
 
 	static double getWeight(int distance, double price) {
 		return 1 / ( (1 + distance) * (1 + Math.pow(price, 3)) );
 	}
 
-	static double avgWeightToTowns(int x, int y, Set<Town> towns, double price) {
-		double nomSum = 0;
-		int denomSum = 0;
-
-		for (Town town: towns) {
-			double weight = getWeightForTown(x, y, town, price);
-			nomSum += weight * town.getPopulation();
-			denomSum += town.getPopulation();
-		}
-
-		return nomSum / (double) denomSum;
-	}
-
-	static double avgDistToTowns(int x, int y, Set<Town> towns) throws NullPointerException {
+	double avgDistToTowns(Set<Town> towns) throws NullPointerException {
 		int nomSum = 0;
 		int denomSum = 0;
 		if (towns == null || towns.size() == 0) {
 			throw new NullPointerException();
 		}
 		for (Town town: towns) {
-			int dist = Field.distanceFrom(x, y, town);
+			int dist = this.distanceFrom(town);
 			nomSum += dist*town.getPopulation();
 			denomSum += town.getPopulation();
 		}
@@ -138,4 +104,5 @@ public class Shop extends Field {
 	public String toString() {
 		return super.toString() + ", Price: " + price + ", Profit " + profit + ", Status: " + status;
 	}
+
 }

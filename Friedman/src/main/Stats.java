@@ -46,6 +46,14 @@ public class Stats {
 		return towns;
 	}
 	
+	int getTotalPopulation() {
+		int result = 0;
+		for (Town town: towns) {
+			result += town.getPopulation();
+		}
+		return result;
+	}
+	
 	Player findPlayerByID(int id) {
 		for (Player player: players) {
 			if (player.getID() == id) {
@@ -63,6 +71,16 @@ public class Stats {
 	
 	void addPlayer(Player player) {
 		players.add(player);
+	}
+	
+	boolean shopExists(Shop shop) {
+		boolean result = false;
+		for (Player player:players) {
+			if (player.shopExists(shop)) {
+				result = true;
+			}
+		}
+		return result;
 	}
 	
 	

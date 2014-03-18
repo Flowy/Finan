@@ -21,22 +21,18 @@ public abstract class Field implements Comparable<Field>{
 	}
 	
 	int distanceFrom(Field finish) {
-		return distanceFrom(this.getX(), this.getY(), finish);
+		int result = Math.abs(this.getX() - finish.getX());
+		result += Math.abs(this.getY() - finish.getY());
+		return result;		
 	}
-	
-	static int distanceFrom(int x, int y, Field finish) {
-		int result = Math.abs(x - finish.getX());
-		result += Math.abs(y - finish.getY());
-		return result;
-	}
-	
-	static Field chooseClosest(int x, int y, Collection<Field> fields) {
+		
+	Field chooseClosest(Collection<Field> fields) {
 		Field closest = null;
 		for (Field field: fields) {
 			if (closest == null) {
 				closest = field;
 			} else {
-				closest = closest.distanceFrom(field) < distanceFrom(x, y, field) ? closest : field;
+				closest = field.distanceFrom(closest) < field.distanceFrom(this) ? closest : field;
 			}
 		}
 		return closest;

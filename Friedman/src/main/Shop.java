@@ -64,6 +64,7 @@ public class Shop extends Field {
 	}
 
 	static double getWeight(int distance, double price) {
+		if (price <= 0 || price >= 10) return 0;
 		return 1 / ( (1 + distance) * (1 + Math.pow(price, 3)) );
 	}
 
@@ -95,7 +96,10 @@ public class Shop extends Field {
 	 * @return price (returns NaN for x>5)
 	 */
 	static double wantedProfitPerUnit(double profit) {
-		double wantedProfit;
+		double wantedProfit = 0;
+		if (profit > 1.5) {
+			wantedProfit = 1.5;
+		}
 		wantedProfit = -5 * Math.sqrt( (3- 2 * profit) / 5) + 5;
 		return wantedProfit;
 	}

@@ -1,20 +1,14 @@
 package main;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class Player {
 
-	int id;
-	Set<Shop> shops;
-	double wallet;
+	private int id;
+	private Set<Shop> shops;
+	private double wallet;
 
 	Player(int id, double wallet) {
 		this.id = id;

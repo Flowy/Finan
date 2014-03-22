@@ -34,6 +34,10 @@ public class Stats {
 	
 	////////////// GETTERS
 	
+	int getRound() {
+		return round;
+	}
+	
 	Player getOwnPlayer() {
 		return ownPlayer;
 	}
@@ -50,6 +54,18 @@ public class Stats {
 		int result = 0;
 		for (Town town: towns) {
 			result += town.getPopulation();
+		}
+		return result;
+	}
+	
+	double getTotalWeightForTown(Town town) {
+		double result = 0;
+		for (Player player: players) {			
+			for (Shop shop: player.getShops()) {
+				if (shop.getStatus() == Shop.Status.OLD) {
+					result += shop.getWeightForTown(town);					
+				}
+			}
 		}
 		return result;
 	}
@@ -82,7 +98,6 @@ public class Stats {
 		}
 		return result;
 	}
-	
 	
 	@Override
 	public String toString() {

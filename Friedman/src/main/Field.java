@@ -23,7 +23,7 @@ public abstract class Field implements Comparable<Field>{
 	int distanceFrom(Field finish) {
 		int result = Math.abs(this.getX() - finish.getX());
 		result += Math.abs(this.getY() - finish.getY());
-		return result;		
+		return result + 1;		
 	}
 		
 	Field chooseClosest(Collection<Field> fields) {

@@ -12,8 +12,8 @@ import main.Shop.Status;
 
 public class Main {
 	
-	final private static int MAX_DISTANCE_FOR_SHOP_PRICE = 7;
-	private float FORECAST = 0.8f;	//multiplier of prices
+//	final private static int MAX_DISTANCE_FOR_SHOP_PRICE = 7;
+	private float FORECAST = .9f;	//multiplier of prices
 	final private static int ITERATION = 10000;
 	final private Stats stats;
 	
@@ -176,13 +176,14 @@ public class Main {
 	
 	public void setBestPrices() {
 		boolean changed = true;
+		final double TOLLERANCE = 0.0000001; //needed for shortening the precice calculation of price
 		while (changed) {
 			changed = false;
 //			System.out.println(stats.getOwnPlayer());
 			for (Shop shop: stats.getOwnPlayer().getShops()) {
 				final double oldPrice = shop.getPrice();
 				setBestPriceForShop(shop);
-				if (oldPrice != shop.getPrice()) {
+				if (oldPrice <= (shop.getPrice() + TOLLERANCE) && oldPrice >= (shop.getPrice() - TOLLERANCE)) {
 					changed = true;
 				}
 			}
@@ -193,7 +194,7 @@ public class Main {
 		double priceSum = 0;
 		double priceN = 0;
 		for (Town town: stats.getTowns()) {
-			double actualWeight = MAX_DISTANCE_FOR_SHOP_PRICE - shop.distanceFrom(town);
+			double actualWeight = town.getPopulation();
 			if (actualWeight > 0) {
 				priceN += actualWeight;
 				priceSum += getBestPriceForTown(shop, town) * actualWeight;

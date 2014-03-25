@@ -7,6 +7,9 @@ import java.util.TreeSet;
 
 public class Stats {
 
+	private final int SHOP_MAINTENANCE = 30;
+	
+	
 	private int round;
 	private int fieldSize;
 	private Player ownPlayer;
@@ -58,9 +61,32 @@ public class Stats {
 		return result;
 	}
 	
+	double getExpectedProfit() {
+		double result = 0;
+		for (Shop shop: ownPlayer.getShops()) {
+			result += getTotalShopProfit(shop);
+		}
+		return result;
+	}
+	
+	double getTotalShopProfit(Shop shop) {
+		double result = 0;
+		for (Town town: towns) {
+			result += getShopProfitPerTown(shop, town);
+		}
+		result -= SHOP_MAINTENANCE;
+		return result;
+	}
+	
+	double getShopProfitPerTown(Shop shop, Town town) {
+		double result = 0;
+		result += (shop.getWeightForTown(town) / getTotalWeightForTown(town)) * shop.getPrice() * town.getPopulation();
+		return result;
+	}
+	
 	double getTotalWeightForTown(Town town) {
 		double result = 0;
-		for (Player player: players) {			
+		for (Player player: players) {
 			for (Shop shop: player.getShops()) {
 				if (shop.getStatus() == Shop.Status.OLD) {
 					result += shop.getWeightForTown(town);					
@@ -120,7 +146,7 @@ public class Stats {
 		StringBuilder prices = new StringBuilder();
 		StringBuilder build = new StringBuilder();
 		StringBuilder remove = new StringBuilder();
-		for (Shop shop: ownPlayer.shops) {
+		for (Shop shop: ownPlayer.getShops()) {
 			switch(shop.getStatus()) {
 			case BUILD:
 				build.append("n " + shop.getX() + " " + shop.getY() + ";");

@@ -1,6 +1,6 @@
 package main;
 
-import java.util.Set;
+import java.util.Collection;
 
 public class Shop extends Field {
 
@@ -68,7 +68,7 @@ public class Shop extends Field {
 		return 1 / ( (1 + distance) * (1 + Math.pow(price, 3)) );
 	}
 
-	double avgDistToTowns(Set<Town> towns) throws NullPointerException {
+	double avgDistToTowns(Collection<Town> towns) throws NullPointerException {
 		int nomSum = 0;
 		int denomSum = 0;
 		if (towns == null || towns.size() == 0) {

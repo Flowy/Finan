@@ -12,8 +12,10 @@ import main.Shop.Status;
 
 public class Main {
 	
+	final private static int MAX_DISTANCE_FOR_SHOP_PRICE = 7;
+	private float FORECAST = 0.8f;	//multiplier of prices
 	final private static int ITERATION = 10000;
-	final Stats stats;
+	final private Stats stats;
 	
 	Main(Stats stats) {
 		this.stats = stats;
@@ -22,29 +24,15 @@ public class Main {
 	public static void main(String[] args) {
 		
 		Main main = new Main(new PlayfieldLoader().loadFile("playfield.txt"));
-		main.createShopsByClusters();
-//		new CreateShopsByClusters(stats).execute();
-		
 		
 //		stats.setOwnPlayer(stats.findPlayerByID(Integer.parseInt(args[0])));
-//		
-//		Strategy strategy = new CreateShopsByClusters(stats);
-//		strategy.execute(3);
-////		System.out.println("\nTowns: " + Shop.getCenterOfTowns(stats.getTowns()));
-//////		System.out.println(stats.getReply());
-//		System.out.println(stats.toString());
+		main.stats.setOwnPlayer(main.stats.findPlayerByID(1));
+//		main.createShopsByClusters();
+		main.setBestPrices();
+		System.out.println(main.stats.getExpectedProfit());
+				
+//		System.out.println(main.stats.toString());
 
-		
-//		for (double i = 1; i<=5; i += 0.5) {
-//			System.out.format("%4.2f %6.4f\n", i, Shop.profitPerUnit(i));
-//		}
-//		
-//		for (int dist = 0; dist<=30; dist++) {
-//			System.out.format("\nDistance: %2d ", dist);
-//			for (double price = 1; price<=5; price += 0.5) {
-//				System.out.format("%4f ", Shop.getWeight(dist, price));
-//			}
-//		}
 	}
 	
 	
@@ -186,12 +174,42 @@ public class Main {
 		return (xDistance/denominatorSum) + (yDistance/denominatorSum);
 	}
 	
+	public void setBestPrices() {
+		boolean changed = true;
+		while (changed) {
+			changed = false;
+//			System.out.println(stats.getOwnPlayer());
+			for (Shop shop: stats.getOwnPlayer().getShops()) {
+				final double oldPrice = shop.getPrice();
+				setBestPriceForShop(shop);
+				if (oldPrice != shop.getPrice()) {
+					changed = true;
+				}
+			}
+		}
+	}
+	
+	private void setBestPriceForShop(Shop shop) {
+		double priceSum = 0;
+		double priceN = 0;
+		for (Town town: stats.getTowns()) {
+			double actualWeight = MAX_DISTANCE_FOR_SHOP_PRICE - shop.distanceFrom(town);
+			if (actualWeight > 0) {
+				priceN += actualWeight;
+				priceSum += getBestPriceForTown(shop, town) * actualWeight;
+			}
+		}
+		
+		shop.setPrice((priceSum/priceN) * FORECAST);
+	}
+	
 	private double getBestPriceForTown(Shop shop, Town town) {
 		//needs to reset shop weight before calculate
 		shop.setPrice(0);
 		double totalWeight = stats.getTotalWeightForTown(town);
 		int distance = shop.distanceFrom(town);
 		
+		//x vyjadrene z derivacie zisku v meste pre jedneho obyvatela (vaha/celkovaVaha * zisk na jednom tovare) porovnanej k nule
 		double temp1 = 1201 * Math.pow(distance, 3) * Math.pow(totalWeight, 3) +
 				702 * Math.pow(distance, 2) * Math.pow(totalWeight, 2) +
 				distance * totalWeight;
